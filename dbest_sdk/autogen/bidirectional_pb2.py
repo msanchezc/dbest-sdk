@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x13\x62idirectional.proto\"\x13\n\x02Ok\x12\r\n\x05state\x18\x01 \x01(\t\"\x19\n\x08NewState\x12\r\n\x05state\x18\x01 \x01(\t\"\x17\n\tSubscribe\x12\n\n\x02id\x18\x01 \x01(\t\"\x19\n\x0bUnsubscribe\x12\n\n\x02id\x18\x01 \x01(\t\"\x18\n\nUnubscribe\x12\n\n\x02id\x18\x01 \x01(\t2\x94\x01\n\rBidirectional\x12\x33\n\x16SubscribeStateListener\x12\n.Subscribe\x1a\t.NewState\"\x00\x30\x01\x12-\n\x18UnsubscribeStateListener\x12\n.Subscribe\x1a\x03.Ok\"\x00\x12\x1f\n\x0bUpdateState\x12\t.NewState\x1a\x03.Ok\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x13\x62idirectional.proto\"\x13\n\x02Ok\x12\r\n\x05state\x18\x01 \x01(\t\"\x19\n\x08NewState\x12\r\n\x05state\x18\x01 \x01(\t\"\x17\n\tSubscribe\x12\n\n\x02id\x18\x01 \x01(\t\"\x19\n\x0bUnsubscribe\x12\n\n\x02id\x18\x01 \x01(\t\"#\n\x07Message\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\t2\xdc\x01\n\rBidirectional\x12\x33\n\x16SubscribeStateListener\x12\n.Subscribe\x1a\t.NewState\"\x00\x30\x01\x12-\n\x18UnsubscribeStateListener\x12\n.Subscribe\x1a\x03.Ok\"\x00\x12\x1f\n\x0bUpdateState\x12\t.NewState\x1a\x03.Ok\"\x00\x12%\n\rSimpleRequest\x12\x08.Message\x1a\x08.Message\"\x00\x12\x1f\n\x0cUpdateAnswer\x12\x08.Message\x1a\x03.Ok\"\x00\x62\x06proto3'
 )
 
 
@@ -153,17 +153,24 @@ _UNSUBSCRIBE = _descriptor.Descriptor(
 )
 
 
-_UNUBSCRIBE = _descriptor.Descriptor(
-  name='Unubscribe',
-  full_name='Unubscribe',
+_MESSAGE = _descriptor.Descriptor(
+  name='Message',
+  full_name='Message',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='id', full_name='Unubscribe.id', index=0,
+      name='id', full_name='Message.id', index=0,
       number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='data', full_name='Message.data', index=1,
+      number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -181,14 +188,14 @@ _UNUBSCRIBE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=123,
-  serialized_end=147,
+  serialized_end=158,
 )
 
 DESCRIPTOR.message_types_by_name['Ok'] = _OK
 DESCRIPTOR.message_types_by_name['NewState'] = _NEWSTATE
 DESCRIPTOR.message_types_by_name['Subscribe'] = _SUBSCRIBE
 DESCRIPTOR.message_types_by_name['Unsubscribe'] = _UNSUBSCRIBE
-DESCRIPTOR.message_types_by_name['Unubscribe'] = _UNUBSCRIBE
+DESCRIPTOR.message_types_by_name['Message'] = _MESSAGE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Ok = _reflection.GeneratedProtocolMessageType('Ok', (_message.Message,), {
@@ -219,12 +226,12 @@ Unsubscribe = _reflection.GeneratedProtocolMessageType('Unsubscribe', (_message.
   })
 _sym_db.RegisterMessage(Unsubscribe)
 
-Unubscribe = _reflection.GeneratedProtocolMessageType('Unubscribe', (_message.Message,), {
-  'DESCRIPTOR' : _UNUBSCRIBE,
+Message = _reflection.GeneratedProtocolMessageType('Message', (_message.Message,), {
+  'DESCRIPTOR' : _MESSAGE,
   '__module__' : 'bidirectional_pb2'
-  # @@protoc_insertion_point(class_scope:Unubscribe)
+  # @@protoc_insertion_point(class_scope:Message)
   })
-_sym_db.RegisterMessage(Unubscribe)
+_sym_db.RegisterMessage(Message)
 
 
 
@@ -235,8 +242,8 @@ _BIDIRECTIONAL = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=150,
-  serialized_end=298,
+  serialized_start=161,
+  serialized_end=381,
   methods=[
   _descriptor.MethodDescriptor(
     name='SubscribeStateListener',
@@ -264,6 +271,26 @@ _BIDIRECTIONAL = _descriptor.ServiceDescriptor(
     index=2,
     containing_service=None,
     input_type=_NEWSTATE,
+    output_type=_OK,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='SimpleRequest',
+    full_name='Bidirectional.SimpleRequest',
+    index=3,
+    containing_service=None,
+    input_type=_MESSAGE,
+    output_type=_MESSAGE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateAnswer',
+    full_name='Bidirectional.UpdateAnswer',
+    index=4,
+    containing_service=None,
+    input_type=_MESSAGE,
     output_type=_OK,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,

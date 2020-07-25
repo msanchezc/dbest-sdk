@@ -4,6 +4,8 @@ service Bidirectional {
   rpc SubscribeStateListener(Subscribe) returns (stream NewState) {}
   rpc UnsubscribeStateListener(Subscribe) returns (Ok) {}
   rpc UpdateState(NewState) returns (Ok) {}
+  rpc SimpleRequest(Message) returns (Message) {}
+  rpc UpdateAnswer(Message) returns (Ok) {}
 }
 
 message Ok {
@@ -22,6 +24,7 @@ message Unsubscribe {
   string id = 1;
 }
 
-message Unubscribe {
+message Message {
   string id = 1;
+  string data = 2;
 }
