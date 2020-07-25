@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+service Bidirectional {
+  rpc SubscribeStateListener(Subscribe) returns (stream NewState) {}
+  rpc UnsubscribeStateListener(Subscribe) returns (Ok) {}
+  rpc UpdateState(NewState) returns (Ok) {}
+}
+
+message Ok {
+  string state = 1;
+}
+
+message NewState {
+  string state = 1;
+}
+
+message Subscribe {
+  string id = 1;
+}
+
+message Unsubscribe {
+  string id = 1;
+}
+
+message Unubscribe {
+  string id = 1;
+}
