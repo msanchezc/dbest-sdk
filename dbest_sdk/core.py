@@ -7,8 +7,56 @@ from dbest_sdk.autogen import bidirectional_pb2_grpc as bidirectional_pb2_grpc
 from dbest_sdk.autogen import bidirectional_pb2 as bidirectional_pb2
 
 
+class Dbest:
+    def __init__(self, ip="localhost:50051"):
+        """
+        Args:
+            - ip (str): Ip address of GRPC server running on DBEST
+        """
+        self.ip = ip
+        self.channel = None
+
+    @staticmethod
+    def _build_simple_request_message(data_str):
+        id = str(data_str)  # str(uuid.uuid1()) # TODO
+        return bidirectional_pb2.Message(id=id, data=data_str)
+
+    def _simple_request(self, data_str):
+        stub = bidirectional_pb2_grpc.BidirectionalStub(self.channel)
+        response = stub.SimpleRequest(
+            Dbest._build_simple_request_message(data_str), timeout=10
+        )
+        time.sleep(0.5)  # TODO remove sleep
+        return response
+
+    def connect(self):
+        """
+        Allow you connect your instance to server running on DBEST
+        """
+        self.channel = grpc.insecure_channel(self.ip)
+
+    def wait_for_state(self, status_to_wait):
+        """
+        Block excecution untul 'status_to_wait' is reached on DBEST
+        Args:
+            - status_to_wait (str): An possible state of DBEST
+        """
+        await_state_listener = _AwaitStateListener(self, status_to_wait)
+        await_state_listener.wait()
+
+    def disconnect(self):
+        """
+        Allow you disconnect your instance from server running on DBEST
+        """
+        self.channel.close()
+
+
 class StatusChangedListener:
     def __init__(self, dbest_instance):
+        """
+        Args:
+            - dbest_instance (Dbest): An connected Dbest instance
+        """
         self.dbest_instance = dbest_instance
         self.uid = str(uuid.uuid1())
 
@@ -30,11 +78,19 @@ class StatusChangedListener:
             print(e)
 
     def subscribe(self):
+        """
+        When subscribe function is called,
+        onStateChange will be called when a DBEST status change is notified.
+        """
         t = threading.Thread(target=self._subscribe, args=[])
         t.daemon = True
         t.start()
 
     def unsubscribe(self):
+        """
+        When subscribe function is called,
+        onStateChange will be called when a DBEST status change is notified.
+        """
         stub = bidirectional_pb2_grpc.BidirectionalStub(
             self.dbest_instance.channel)
         response = stub.UnsubscribeStateListener(
@@ -43,6 +99,10 @@ class StatusChangedListener:
         return response
 
     def onStateChanged(self, state):
+        """
+        This function must be overwritten
+        in order to catch the changes of state
+        """
         pass
 
 
@@ -63,32 +123,3 @@ class _AwaitStateListener(StatusChangedListener):
         self.lock.acquire()
         self.lock.release()
         self.unsubscribe()
-
-
-class Dbest(object):
-    def __init__(self, ip="localhost:50051"):
-        self.ip = ip
-        self.channel = None
-
-    def connect(self):
-        self.channel = grpc.insecure_channel(self.ip)
-
-    def wait_for_state(self, status_to_wait):
-        await_state_listener = _AwaitStateListener(self, status_to_wait)
-        await_state_listener.wait()
-
-    @staticmethod
-    def build_simple_request_message(data_str):
-        id = str(data_str)  # str(uuid.uuid1()) # TODO
-        return bidirectional_pb2.Message(id=id, data=data_str)
-
-    def _simple_request(self, data_str):
-        stub = bidirectional_pb2_grpc.BidirectionalStub(self.channel)
-        response = stub.SimpleRequest(
-            Dbest.build_simple_request_message(data_str), timeout=10
-        )
-        time.sleep(0.5)  # TODO remove sleep
-        return response
-
-    def disconnect(self):
-        self.channel.close()

@@ -11,10 +11,10 @@ Subpackages
 Submodules
 ----------
 
-dbest\_sdk.dbest\_sdk module
-----------------------------
+dbest\_sdk.core module
+----------------------
 
-.. automodule:: dbest_sdk.dbest_sdk
+.. automodule:: dbest_sdk.core
     :members:
     :undoc-members:
     :show-inheritance:

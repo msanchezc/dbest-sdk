@@ -5,24 +5,24 @@ import janus
 from grpc.experimental import aio
 from dbest_sdk.autogen import bidirectional_pb2_grpc as bidirectional_pb2_grpc
 from dbest_sdk.autogen import bidirectional_pb2 as bidirectional_pb2
-from dbest_sdk.serial_broker import SerialBroker
+from dbest_sdk.serial_broker import _SerialBroker
 
 
-class State:
+class _State:
     def __init__(self, state):
         self.state = state
 
 
-class Unsubscribe:
+class _Unsubscribe:
     def __init__(self, uid):
         self.uid = uid
 
 
-class BidirectionalService(bidirectional_pb2_grpc.BidirectionalServicer):
+class _BidirectionalService(bidirectional_pb2_grpc.BidirectionalServicer):
     def __init__(self):
         self.queues = {}
         self.simple_requests = {}
-        self.sb = SerialBroker()
+        self.sb = _SerialBroker()
         self.sb.start()
 
     async def SubscribeStateListener(self, request, context):
@@ -31,22 +31,22 @@ class BidirectionalService(bidirectional_pb2_grpc.BidirectionalServicer):
         self.queues[uid] = queue
         while True:
             message = await self.queues[uid].async_q.get()
-            if isinstance(message, State):
+            if isinstance(message, _State):
                 yield bidirectional_pb2.NewState(state=message.state)
 
-            if isinstance(message, Unsubscribe):
+            if isinstance(message, _Unsubscribe):
                 self.queues[uid].close()
                 self.queues[uid] = None
                 break
 
     def UnsubscribeStateListener(self, request, context):
         uid = request.id
-        self.queues[uid].sync_q.put(Unsubscribe(uid))
+        self.queues[uid].sync_q.put(_Unsubscribe(uid))
         return bidirectional_pb2.Ok()
 
     def UpdateState(self, request, context):
         new_state = request
-        dbest_state = State(new_state.state)
+        dbest_state = _State(new_state.state)
         for key in self.queues:
             if self.queues[key] and not self.queues[key].closed:
                 self.queues[key].sync_q.put(dbest_state)
@@ -74,7 +74,7 @@ class BidirectionalService(bidirectional_pb2_grpc.BidirectionalServicer):
         message = request
 
         # Send data by serial comunnication
-        message_str = BidirectionalService.message_to_str(message)
+        message_str = _BidirectionalService.message_to_str(message)
 
         # Make a future
         loop = asyncio.get_running_loop()
@@ -98,7 +98,7 @@ async def _start_async_server():
     server = aio.server()
     server.add_insecure_port("[::]:50051")
     bidirectional_pb2_grpc.add_BidirectionalServicer_to_server(
-        BidirectionalService(), server
+        _BidirectionalService(), server
     )
     await server.start()
     await server.wait_for_termination()

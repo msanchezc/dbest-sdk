@@ -1,4 +1,5 @@
-import dbest_sdk, time
+import dbest_sdk
+import time
 
 last_state = None
 

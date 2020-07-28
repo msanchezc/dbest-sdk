@@ -8,7 +8,7 @@ from dbest_sdk.autogen import bidirectional_pb2 as bidirectional_pb2
 from threading import Lock
 
 
-class SerialUitls:
+class _SerialUitls:
     # serial config
     BAUDRATE = 38400
     GET_STATE = "01"
@@ -25,10 +25,10 @@ class SerialUitls:
     @staticmethod
     def is_error(message):
         return message in [
-            SerialUitls.TIMEOUT_ERROR,
-            SerialUitls.INTERNAL_ERROR,
-            SerialUitls.NO_SERIAL_PORT,
-            SerialUitls.NO_DATA,
+            _SerialUitls.TIMEOUT_ERROR,
+            _SerialUitls.INTERNAL_ERROR,
+            _SerialUitls.NO_SERIAL_PORT,
+            _SerialUitls.NO_DATA,
         ]
 
     def get_port(self):
@@ -48,7 +48,7 @@ class SerialUitls:
                 self.ser = serial.Serial(
                     device_name,
                     timeout=0.2,
-                    baudrate=SerialUitls.BAUDRATE,
+                    baudrate=_SerialUitls.BAUDRATE,
                     bytesize=serial.EIGHTBITS,
                     parity=serial.PARITY_NONE,
                     stopbits=serial.STOPBITS_ONE,
@@ -75,14 +75,14 @@ class SerialUitls:
                     ser.write(bytes(message))  # Python 2 syntax
                 else:
                     ser.write(bytes(message, "utf-8"))  # Python 3 syntax
-                result = SerialUitls.SENT
+                result = _SerialUitls.SENT
             except serial.SerialTimeoutException:
-                result = SerialUitls.TIMEOUT_ERROR
+                result = _SerialUitls.TIMEOUT_ERROR
             except Exception as e:
                 print(e)
-                result = SerialUitls.INTERNAL_ERROR
+                result = _SerialUitls.INTERNAL_ERROR
         else:
-            result = SerialUitls.NO_SERIAL_PORT
+            result = _SerialUitls.NO_SERIAL_PORT
         self.lock.release()
         return result
 
@@ -96,18 +96,18 @@ class SerialUitls:
                 result = received_message
             except Exception as e:
                 print(e)
-                result = SerialUitls.INTERNAL_ERROR
+                result = _SerialUitls.INTERNAL_ERROR
         else:
-            result = SerialUitls.NO_SERIAL_PORT
+            result = _SerialUitls.NO_SERIAL_PORT
         if result == "":
-            result = SerialUitls.NO_DATA
+            result = _SerialUitls.NO_DATA
         return result
 
 
-class SerialBroker:
+class _SerialBroker:
     def __init__(self):
         self.channel = grpc.insecure_channel("localhost:50051")
-        self.serial_utils = SerialUitls()
+        self.serial_utils = _SerialUitls()
         self.running = True
 
     def start(self):
@@ -118,12 +118,12 @@ class SerialBroker:
     def _start(self):
         while self.running:
             message = self._receive_from_serial()
-            if not SerialUitls.is_error(message):
+            if not _SerialUitls.is_error(message):
                 print("MESSAGE RECEIVED %s" % message)
             message = message.split(",")
             if message[0] == "S":
                 message = message[1]
-                if not SerialUitls.is_error(message):
+                if not _SerialUitls.is_error(message):
                     response = self._send_state(message)
                     if response is not None and isinstance(
                         response, bidirectional_pb2.Ok
