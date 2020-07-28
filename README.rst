@@ -27,11 +27,6 @@ A Python package for remote control of DBEST (drone battery exchanger system for
 * Documentation: https://dbest-sdk.readthedocs.io.
 
 
-Generate pb2.py and pb2_grpc.py files from protos
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-* python3 -m grpc_tools.protoc -I . --python_out=dbest_sdk/autogen --grpc_python_out=dbest_sdk/autogen --proto_path=protos bidirectional.proto
-
-
 Credits
 -------
 
