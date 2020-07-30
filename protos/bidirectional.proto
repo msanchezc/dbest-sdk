@@ -3,9 +3,9 @@ syntax = "proto3";
 service Bidirectional {
   rpc SubscribeStateListener(Subscribe) returns (stream NewState) {}
   rpc UnsubscribeStateListener(Subscribe) returns (Ok) {}
-  rpc UpdateState(NewState) returns (Ok) {}
   rpc SimpleRequest(Message) returns (Message) {}
   rpc UpdateAnswer(Message) returns (Ok) {}
+  rpc UpdateState(NewState) returns (Ok) {}
 }
 
 message Ok {
