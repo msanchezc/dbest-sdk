@@ -18,10 +18,10 @@ dbest_sdk
      :target: https://pyup.io/repos/github/PSBPOSAS/dbest-sdk/
      :alt: Updates
 
-
-
+.. image:: docs/static/dbest.png
+     :alt: Dbest
+     
 A Python package for remote control of DBEST (drone battery exchanger system for DJI Mavic 2 products)
-
 
 * Free software: MIT license
 * Documentation: https://dbest-sdk.readthedocs.io.
