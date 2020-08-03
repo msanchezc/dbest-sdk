@@ -25,6 +25,8 @@ class DbestRequest:
     RETRACT_TOP_PLATTFORM = "DRRT"
     GET_CURRENT_STATE = "GTCS"
     GET_DRONE_COUNT = "GTDC"
+    MOVE_DRONE_FROM_EXCHANGE_AREA_TO_AUXILIARY_AREA = "DRMA"
+    MOVE_DRONE_FROM_AUXILIARY_AREA_TO_EXCHANGE_AREA = "DRME"
 
     @staticmethod
     def exchange_battery_request(n):

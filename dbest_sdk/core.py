@@ -167,6 +167,26 @@ class Dbest:
         """
         return self._response_from_request(DbestRequest.GET_DRONE_COUNT)
 
+    def _move_drone_from_exchange_area_to_auxiliary_area(self):
+        """
+        Starts to move drone from exchange area to auxiliary area
+        Returns:
+            [DbesState]: Current Dbest state.
+        """
+        return self._response_from_request(
+            DbestRequest.MOVE_DRONE_FROM_EXCHANGE_AREA_TO_AUXILIARY_AREA
+        )
+
+    def _move_drone_from_auxiliary_area_to_exchange_area(self):
+        """
+        Starts to move drone from auxiliary area to exchange area
+        Returns:
+            [DbesState]: Current Dbest state.
+        """
+        return self._response_from_request(
+            DbestRequest.MOVE_DRONE_FROM_AUXILIARY_AREA_TO_EXCHANGE_AREA
+        )
+
     def wait_for_state(self, status_to_wait):
         """
         Block excecution untul 'status_to_wait' is reached on DBEST
