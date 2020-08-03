@@ -5,8 +5,9 @@ Subpackages
 -----------
 
 .. toctree::
+   :maxdepth: 4
 
-    dbest_sdk.autogen
+   dbest_sdk.autogen
 
 Submodules
 ----------
@@ -15,31 +16,31 @@ dbest\_sdk.core module
 ----------------------
 
 .. automodule:: dbest_sdk.core
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-dbest\_sdk.serial\_broker module
---------------------------------
+dbest\_sdk.responses module
+---------------------------
 
-.. automodule:: dbest_sdk.serial_broker
-    :members:
-    :undoc-members:
-    :show-inheritance:
+.. automodule:: dbest_sdk.responses
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-dbest\_sdk.server module
+dbest\_sdk.states module
 ------------------------
 
-.. automodule:: dbest_sdk.server
-    :members:
-    :undoc-members:
-    :show-inheritance:
+.. automodule:: dbest_sdk.states
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
 Module contents
 ---------------
 
 .. automodule:: dbest_sdk
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
