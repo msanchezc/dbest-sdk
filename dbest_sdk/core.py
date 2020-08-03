@@ -191,7 +191,7 @@ class Dbest:
         """
         Block excecution untul 'status_to_wait' is reached on DBEST
         Args:
-            - status_to_wait (str): An possible state of DBEST
+            - status_to_wait (DbesState): An possible state of DBEST
         """
         await_state_listener = _AwaitStateListener(self, status_to_wait)
         await_state_listener.wait()

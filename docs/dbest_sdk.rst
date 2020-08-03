@@ -20,10 +20,10 @@ dbest\_sdk.core module
    :undoc-members:
    :show-inheritance:
 
-dbest\_sdk.responses module
----------------------------
+dbest\_sdk.messages module
+--------------------------
 
-.. automodule:: dbest_sdk.responses
+.. automodule:: dbest_sdk.messages
    :members:
    :undoc-members:
    :show-inheritance:
