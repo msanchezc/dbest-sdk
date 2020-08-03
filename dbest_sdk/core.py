@@ -35,6 +35,129 @@ class Dbest:
         """
         self.channel = grpc.insecure_channel(self.ip)
 
+    def lock(self):
+        """
+        Lock Dbest, in this state no request is received.
+        Returns:
+            [DbestResponse]: Request response.
+        """
+        pass
+
+    def unlock(self):
+        """
+        Unlock Dbest. DANGER: before calling this method it is necessary to remove all the drones from the exchanger manually. This method will reset Dbest to its initial state.
+
+        Returns:
+            [DbestResponse]: Request response.
+        """
+        pass
+
+    def get_current_state(self):
+        """
+        Gets the current state of Dbest
+        Returns:
+            [DbesState]: Current Dbest state.
+        """
+        pass
+
+    def get_drone_count(self):
+        """
+        Gets total drone count inside Dbest, returned value can be 0, 1 or 2.
+        Returns:
+            [int]: drone count
+        """
+        pass
+
+    def take_drone_out(self):
+        """
+        Take out a drone from exchange area or auxiliary area, deploy top plattform and moves the drone to takeoff area.
+        Returns:
+            [DbestResponse]: Request response.
+        """
+        pass
+
+    def take_drone_in(self):
+        """
+        Retract top plattform and move the drone from takeoff area to exchange area.
+        Returns:
+            [DbestResponse]: Request response.
+        """
+        pass
+
+    def prepare_to_descent(self):
+        """
+        Deploy bottom plattform (Biggest ARUCO)
+        Returns:
+            [DbestResponse]: Request response.
+        """
+        pass
+
+    def prepare_to_landing(self):
+        """
+        Deploy top plattform (Smallest ARUCO)
+        Returns:
+            [DbestResponse]: Request response.
+        """
+        pass
+
+    def exchange_battery(self, n):
+        """
+        If there are any drones in the exchange area, Dbest starts exchanging the drone battery with the battery in the socket with index n.
+        Args:
+            - n (int): Socket index [0, 7]
+        Returns:
+            [DbestResponse]: Request response.
+        """
+        pass
+
+    def retract_bottom_platform(self):
+        """
+        Starts to retract buttom plaftform
+
+        Returns:
+            [DbestResponse]: Request response.
+        """
+        pass
+
+    def retract_top_platform(self):
+        """
+        Starts to retract top plaftform
+
+        Returns:
+            [DbestResponse]: Request response.
+        """
+        pass
+
+    def set_socket_enabled(self, flag, n):
+        """
+        Enable / Disable battery socket with index n
+        Args:
+            - n (int): Socket index [0, 7]
+        Returns:
+            [DbestResponse]: Request response.
+        """
+        pass
+
+    def is_socket_enabled(self, n):
+        """
+        Get current enabled state of battery socket with index n
+        Args:
+            - n (int): Socket index [0, 7]
+        Returns:
+            [boolean]: True / False if socket is enabled / disabled on index n
+        """
+        pass
+
+    def is_socket_cooling(self, n):
+        """
+        Get current cooling state of battery socket with index n
+        Args:
+            - n (int): Socket index [0, 7]
+        Returns:
+            [boolean]: True / False if socket is cooling / disabled on index n
+        """
+        pass
+
     def wait_for_state(self, status_to_wait):
         """
         Block excecution untul 'status_to_wait' is reached on DBEST
