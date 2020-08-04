@@ -14,7 +14,7 @@ import enum
 # STSET7 -> Set enabled to True to socket with index 7 
 # STSEF2 -> Set enabled to False to socket with index 2
 
-class DbestRequest:
+class _DbestRequest:
     LOCK = "DRLO"
     UNLOCK = "DRUL"
     TAKE_DRONE_OUT = "DRTO"

@@ -6,7 +6,7 @@ from threading import Lock
 from dbest_sdk.autogen import bidirectional_pb2_grpc as bidirectional_pb2_grpc
 from dbest_sdk.autogen import bidirectional_pb2 as bidirectional_pb2
 from dbest_sdk.states import DbesState
-from dbest_sdk.messages import DbestRequest, DbestResponse
+from dbest_sdk.messages import _DbestRequest as DbestRequest, DbestResponse
 
 
 class Dbest:
@@ -25,14 +25,14 @@ class Dbest:
 
     def _simple_request(self, data_str):
         stub = bidirectional_pb2_grpc.BidirectionalStub(self.channel)
-        response = stub.SimpleRequest(
+        message_response = stub.SimpleRequest(
             Dbest._build_simple_request_message(data_str), timeout=10
         )
         time.sleep(1)  # TODO remove sleep, bug #1
-        return response
+        return message_response.data
 
     def _response_from_request(self, dbest_request):
-        response_str = self._simple_request(dbest_request.value)
+        response_str = self._simple_request(dbest_request)
         response = DbestResponse(int(response_str))
         return response
 
