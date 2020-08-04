@@ -212,11 +212,7 @@ class StatusChangedListener:
         self.dbest_instance = dbest_instance
         self.uid = str(uuid.uuid1())
 
-    def _subscribe(self):
-        stub = bidirectional_pb2_grpc.BidirectionalStub(self.dbest_instance.channel)
-        responses = stub.SubscribeStateListener(
-            bidirectional_pb2.Subscribe(id=self.uid)
-        )
+    def _subscribe(self, responses):
         try:
             for new_state_response in responses:
                 state = DbesState(int(new_state_response.state))
@@ -231,10 +227,20 @@ class StatusChangedListener:
         """
         When subscribe function is called,
         onStateChange will be called when a DBEST status change is notified.
+        Returns:
+            [DbestResponse]: Response for subscribe request
         """
-        t = threading.Thread(target=self._subscribe, args=[])
-        t.daemon = True
-        t.start()
+        stub = bidirectional_pb2_grpc.BidirectionalStub(self.dbest_instance.channel)
+        responses = stub.SubscribeStateListener(
+            bidirectional_pb2.Subscribe(id=self.uid)
+        )
+        if responses:
+            t = threading.Thread(target=self._subscribe, args=[responses])
+            t.daemon = True
+            t.start()
+            return DbestResponse.ACK
+        else:
+            return DbestResponse.INTERNAL_ERROR
 
     def unsubscribe(self):
         """
@@ -251,6 +257,8 @@ class StatusChangedListener:
         """
         This function must be overwritten
         in order to catch the changes of state
+        Args:
+            - state (DbestState): new Dbest state
         """
         pass
 
