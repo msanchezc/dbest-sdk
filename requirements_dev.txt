@@ -2,7 +2,7 @@ grpcio==1.31.0
 grpcio-tools==1.30.0
 
 coverage==5.2.1
-tox==3.18.1
+tox==3.19.0
 flake8==3.8.3
 watchdog==0.10.3
 wheel==0.35.1
