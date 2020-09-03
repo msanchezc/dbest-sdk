@@ -20,7 +20,7 @@ class Dbest:
 
     @staticmethod
     def _build_simple_request_message(data_str):
-        id = str(data_str)  # str(uuid.uuid1()) # TODO
+        id = "123456789"  # str(uuid.uuid1()) # stress_test
         return bidirectional_pb2.Message(id=id, data=data_str)
 
     def _simple_request(self, data_str):
