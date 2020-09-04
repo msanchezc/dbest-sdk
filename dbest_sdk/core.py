@@ -26,7 +26,7 @@ class Dbest:
     def _simple_request(self, data_str):
         stub = bidirectional_pb2_grpc.BidirectionalStub(self.channel)
         message_response = stub.SimpleRequest(
-            Dbest._build_simple_request_message(data_str), timeout=10
+            Dbest._build_simple_request_message(data_str), timeout=600
         )
         time.sleep(1)  # TODO remove sleep, bug #1
         return message_response.data
